@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import axios from 'axios';
+import "./ai.css"
 
 export default function Page() {
   const [message, setMessage] = useState('');
@@ -16,7 +17,7 @@ export default function Page() {
   };
 
   return (
-    
+    <div></div>
   );
 }
 
