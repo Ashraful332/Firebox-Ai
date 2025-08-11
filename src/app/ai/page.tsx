@@ -3,6 +3,9 @@
 import { useState } from 'react';
 import axios from 'axios';
 import "./ai.css"
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+
 
 export default function Page() {
   let [message, setMessage] = useState('');
@@ -18,13 +21,14 @@ export default function Page() {
   };
 
   return (
-    <div className='flex flex-col items-center main-div-ai h-screen'>
+  <div className=''>
+    <div className='flex flex-col items-center main-div-ai h-screen overflow-y-scroll scrollbar-thin  '>
       <div className="p-4 w-[90vw] lg:w-[70vw] xl:w-[40vw] ">
       <div className="relative">
         <div className="relative flex flex-col border border-white/10 rounded-xl bg-[#ffffff15] backdrop-blur-[0.8px] ">
           <div className="overflow-y-auto">
             <textarea
-              rows={3}
+              rows={2}
               style={{ overflow: "hidden", outline: "none" }}
               className="w-full px-4 py-3 resize-none bg-transparent border-none focus:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 placeholder:text-white/50 align-top leading-normal min-h-[80px] text-white"
               placeholder="Ask me anything..."
@@ -138,14 +142,16 @@ export default function Page() {
       </div>
     </div>
     <div>
-      {loading && <p>Thinking...</p>}
+      {loading && <p>Thinking...</p>} 
       {reply && (
         <div className="mt-4 border-t pt-2">
-          <strong>Bot:</strong> {reply}
+          <strong>Bot:</strong> 
+          <ReactMarkdown remarkPlugins={[remarkGfm]}>{reply}</ReactMarkdown>
         </div>
       )}
     </div>
     </div>
+</div>
   );
 }
 
