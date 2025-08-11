@@ -5,7 +5,7 @@ import axios from 'axios';
 import "./ai.css"
 
 export default function Page() {
-  const [message, setMessage] = useState('');
+  let [message, setMessage] = useState('');
   const [reply, setReply] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -14,13 +14,14 @@ export default function Page() {
     const res = await axios.post('/api/chat', { message });
     setReply(res.data.reply);
     setLoading(false);
+    setMessage(" ")
   };
 
   return (
     <div className='flex flex-col items-center main-div-ai h-screen'>
       <div className="p-4 w-[90vw] lg:w-[70vw] xl:w-[40vw] ">
       <div className="relative">
-        <div className="relative flex flex-col border border-white/10 rounded-xl bg-black">
+        <div className="relative flex flex-col border border-white/10 rounded-xl bg-[#ffffff15] backdrop-blur-[0.8px] ">
           <div className="overflow-y-auto">
             <textarea
               rows={3}

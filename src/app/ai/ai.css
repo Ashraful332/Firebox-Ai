@@ -1,4 +1,8 @@
 
 .main-div-ai{
     background-color: #000011;
+    /* Add your background pattern here */
+    background-image: radial-gradient(rgba(255, 255, 255, 0.171) 2px, transparent 0);
+    background-size: 30px 30px;
+    background-position: -5px -5px
 }
