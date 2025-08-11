@@ -6,23 +6,39 @@ import "./ai.css"
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
+type ArrayData = {
+  text: string;
+  date: string;
+  time: string;
+};
 
 export default function Page() {
   let [message, setMessage] = useState('');
-  const [reply, setReply] = useState('');
+  const [replies, setReplies] = useState<ArrayData[]>([]);
   const [loading, setLoading] = useState(false);
 
   const sendMessage = async () => {
     setLoading(true);
     const res = await axios.post('/api/chat', { message });
-    setReply(res.data.reply);
+
+    // setReply(res.data.reply);
+   
+    const newReply:ArrayData = {
+      text : res.data.reply,
+      date : new Date().toLocaleDateString(),
+      time : new Date().toLocaleTimeString()
+    }
+    
+    setReplies(prev => [...prev, newReply]);
+
     setLoading(false);
     setMessage(" ")
   };
 
+
   return (
-  <div className=''>
-    <div className='flex flex-col items-center main-div-ai h-screen overflow-y-scroll scrollbar-thin  '>
+  <>
+    <div className='flex flex-col items-center main-div-ai h-screen overflow-y-scroll overflow-x-hidden scrollbar-thin  '>
       <div className="p-4 w-[90vw] lg:w-[70vw] xl:w-[40vw] ">
       <div className="relative">
         <div className="relative flex flex-col border border-white/10 rounded-xl bg-[#ffffff15] backdrop-blur-[0.8px] ">
@@ -141,39 +157,50 @@ export default function Page() {
         </div>
       </div>
     </div>
-    <div>
-      {loading && <p>Thinking...</p>} 
-      {reply && (
-        <div className="mt-4 border-t pt-2">
-          <strong>Bot:</strong> 
-          <ReactMarkdown remarkPlugins={[remarkGfm]}>{reply}</ReactMarkdown>
-        </div>
-      )}
+    <div className='w-[90vw] lg:w-[70vw] xl:w-[40vw]'>
+      {loading && <p>Thinking...</p>}
+
+      <div className="mt-4 space-y-3">
+        {replies.map((r, index) => (
+          <div key={index} className="border-t pt-2">
+            <div className="text-sm text-gray-500">
+              {r.date} at {r.time}
+            </div>
+            <strong>chat:</strong>
+            <ReactMarkdown remarkPlugins={[remarkGfm]}>
+              {r.text}
+            </ReactMarkdown>
+          </div>
+        ))}
     </div>
     </div>
 </div>
-  );
-}
+</>
+  );}
 
-//    <div className="p-4 max-w-xl mx-auto">
-//       <h1 className="text-xl font-bold mb-4">🤖 Gemini AI Chatbot</h1>
-//       <textarea
-//         className="border w-full p-2 mb-2 text-black"
-//         rows={4}
-//         value={message}
-//         onChange={(e) => setMessage(e.target.value)}
-//         placeholder="Type a message"
-//       />
-//       <button
-//         onClick={sendMessage}
-//         className="bg-blue-600 text-white px-4 py-2 rounded"
-//       >
-//         Send
-//       </button>
-//       {loading && <p>Thinking...</p>}
-//       {reply && (
-//         <div className="mt-4 border-t pt-2">
-//           <strong>Bot:</strong> {reply}
-//         </div>
-//       )}
-//     </div>
+
+
+  //  <div className="p-4 max-w-xl mx-auto">
+  //     <h1 className="text-xl font-bold mb-4">🤖 Gemini AI Chatbot</h1>
+  //     <textarea
+  //       className="border w-full p-2 mb-2 text-black"
+  //       rows={4}
+  //       value={message}
+  //       onChange={(e) => setMessage(e.target.value)}
+  //       placeholder="Type a message"
+  //     />
+  //     <button
+  //       onClick={sendMessage}
+  //       className="bg-blue-600 text-white px-4 py-2 rounded"
+  //     >
+  //       Send
+  //     </button>
+  //     {loading && <p>Thinking...</p>}
+  //     {reply && (
+  //       <div className="mt-4 border-t pt-2">
+  //         <strong>Bot:</strong> {reply}
+  //       </div>
+  //     )}
+  //   </div>  */
+
+ 
