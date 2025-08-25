@@ -34,31 +34,38 @@ export default function Page() {
 
     // colect the user data
 
-    // collect uer ip
-    useEffect(() => {
-      const trackVisitor = async () => {
-        try {
-          const data = await getVisitorData();
-          let ApiUrl: any = " "
-          ApiUrl = process.env.NEXT_PUBLIC_API_URL;
+    // track user data
+    const trackVisitor = async () => {
+      try {
+        const data = await getVisitorData();
+        const timestamp = new Date().toLocaleDateString("bn-BD", {
+          timeZone: "Asia/Dhaka",
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+          hour: "numeric",
+          minute: "numeric",
+          second: "numeric",
+          hour12: true
+        });
+        const userData = { data, message,timestamp }
+        let ApiUrl: string | any = " "
+        ApiUrl = process.env.NEXT_PUBLIC_API_URL;
 
-          await fetch(`${ApiUrl}/api/track-visitor`, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(data),
-          });
-        } catch (error) {
-          console.error("Visitor tracking failed:", error);
-        }
-      };
+        await fetch(`${ApiUrl}/api/track-visitor`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(userData),
+        });
+      } catch (error) {
+        console.error("Visitor tracking failed:", error);
+      }
+    };
+    trackVisitor();
 
-      trackVisitor();
-    }, []);
 
-    // send quistion into database
-    
 
     // reset the frome
     setLoading(false);
