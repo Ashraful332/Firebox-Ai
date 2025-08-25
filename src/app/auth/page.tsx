@@ -19,7 +19,7 @@ export default function Login() {
             exp?: number;
         }
 
-        const PublicApi = process.env.PUBLIC_API;
+        // const PublicApi = process.env.PUBLIC_API;
         const authData = jwtDecode<MyJwtPayload>(credentialResponse.credential);
 
         // console.log(credentialResponse);
@@ -31,7 +31,7 @@ export default function Login() {
         console.log({ UserEmail, UserName, UserPhoto });
 
         try {
-            const res = await axios.post(`${PublicApi}/google-login`, { UserEmail, UserName, UserPhoto });
+            const res = await axios.post(`/api/auth`, { UserEmail, UserName, UserPhoto });
 
             // token save in cookie
             Cookies.set("token", res.data.token, {
