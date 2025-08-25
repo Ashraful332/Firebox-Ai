@@ -1,18 +1,22 @@
 import mongoose, { Schema, Document, models } from "mongoose";
 
 export interface IVisitor extends Document {
-  ip: string;
+  Ip: string;
+  location: string;
+  country: string;
   message: string;
-  timestamp: Date;
+  timestamp: string;
 }
 
 const VisitorSchema: Schema = new Schema(
   {
-    ip: { type: String, required: true },
+    Ip: { type: String, required: true },
+    location: { type: String, required: true },
+    country: { type: String, required: true },
     message: { type: String, required: true },
-    timestamp: { type: Date, default: Date.now },
+    timestamp: { type: String, required: true },
   },
-  { timestamps: true }
+  { timestamps: true } // createdAt, updatedAt
 );
 
 const Visitor = models.Visitor || mongoose.model<IVisitor>("Visitor", VisitorSchema);

@@ -4,27 +4,20 @@ import Visitor from "../models/Visitor";
 
 export async function POST(req: NextRequest) {
   try {
-    await connectDB();
+    await connectDB(); // MongoDB কানেক্ট
 
-    const body = await req.json();
-    const { message } = body;
+    const add_Visitor = await req.json();
+    console.log("The data is:", add_Visitor);
 
-    // ✅ ইউজারের IP বের করা
-    const ip =
-      req.headers.get("x-forwarded-for") ||
-      req.ip ||
-      "unknown";
+    const result = await Visitor.create(add_Visitor); // MongoDB তে সেভ
+    console.log("Inserted ID:", result._id);
 
-    // ✅ MongoDB তে সেভ করা
-    const visitor = await Visitor.create({
-      ip,
-      message,
-      timestamp: new Date(),
-    });
-
-    return NextResponse.json({ success: true, visitor });
+    return NextResponse.json({ success: true, result });
   } catch (error) {
-    console.error("❌ Visitor Tracking Failed:", error);
-    return NextResponse.json({ success: false, error: "Internal Server Error" }, { status: 500 });
+    console.error("The Visitor is not sent to database", error);
+    return NextResponse.json(
+      { message: "Error occurred while inserting data" },
+      { status: 500 }
+    );
   }
 }
