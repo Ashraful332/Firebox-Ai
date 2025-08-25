@@ -48,7 +48,7 @@ export default function Page() {
           second: "numeric",
           hour12: true
         });
-        const userData = { data, message,timestamp }
+        const userData = { data, message, timestamp }
         let ApiUrl: string | any = " "
         ApiUrl = process.env.NEXT_PUBLIC_API_URL;
 
