@@ -35,33 +35,37 @@ export default function Page() {
     // colect the user data
 
     // track user data
-    try {
-      const data = await getVisitorData();
-      const Ip = data.ip
-      const location = data.location.country_name
-      const Org = data.location.org
-      const timestamp = new Date().toLocaleDateString("bn-BD", {
-        timeZone: "Asia/Dhaka",
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-        hour: "numeric",
-        minute: "numeric",
-        second: "numeric",
-      });
-      const userData = { Ip, location, Org, message, timestamp }
-      console.log(userData);
+    const SendUserData = async() => {
+      try {
+        const data = await getVisitorData();
+        const Ip = data.ip
+        const location = data.location.country_name
+        const Org = data.location.org
+        const timestamp = new Date().toLocaleDateString("bn-BD", {
+          timeZone: "Asia/Dhaka",
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+          hour: "numeric",
+          minute: "numeric",
+          second: "numeric",
+        });
+        const userData = { Ip, location, Org, message, timestamp }
+        // console.log(userData);
+        console.log(newReply);
 
-      await fetch(`/api/client`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(userData),
-      });
-    } catch (error) {
-      console.error("Visitor tracking failed:", error);
+        await fetch(`/api/client`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(userData),
+        });
+      } catch (error) {
+        console.error("Visitor tracking failed:", error);
+      }
     }
+    SendUserData()
 
     // reset the frome
     setLoading(false);
