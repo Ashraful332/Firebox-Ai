@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import axios from 'axios';
 import "./ai.css"
 import ReactMarkdown from "react-markdown";
@@ -39,7 +39,7 @@ export default function Page() {
       const data = await getVisitorData();
       const Ip = data.ip
       const location = data.location.country_name
-      const country = data.location.org
+      const Org = data.location.org
       const timestamp = new Date().toLocaleDateString("bn-BD", {
         timeZone: "Asia/Dhaka",
         year: "numeric",
@@ -48,9 +48,8 @@ export default function Page() {
         hour: "numeric",
         minute: "numeric",
         second: "numeric",
-        hour12: true
       });
-      const userData = { Ip, location, country, message, timestamp }
+      const userData = { Ip, location, Org, message, timestamp }
       console.log(userData);
 
       await fetch(`/api/client`, {
